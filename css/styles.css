@@ -1232,6 +1232,7 @@ body {
 
         padding-bottom: 20px;
         color: #1a70da;
+        font-weight: bold;
 
     }
 
@@ -1241,6 +1242,8 @@ body {
         display: block;
 
         color: #000000;
+
+        font-weight: bold;
 
     }
 
