@@ -1155,7 +1155,6 @@ body {
 
     .hero-content {
         display: flex;
-        position: absolute;
         flex-direction: column;
         z-index: 2;
         justify-content: center;
