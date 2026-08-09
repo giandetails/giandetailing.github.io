@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         datePicker.min = `${yyyy}-${mm}-${dd}`;
     }
 
+
     // --- HERO VIDEO MEMORY OPTIMIZATION (LOAD/UNLOAD VIA SCROLLTRIGGER) ---
     const heroVideo = document.getElementById("hero-video");
     if (heroVideo && window.gsap && window.ScrollTrigger) {
@@ -221,58 +222,104 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ===========================
-    // GOOGLE ANALYTICS EVENTS
+    // GOOGLE ANALYTICS 4 EVENTS
     // ===========================
 
     if (typeof gtag === "function") {
 
-        // Hero Buttons
-        document.getElementById("quoteBtn")?.addEventListener("click", () => {
-            gtag("event", "click_quote_button", {
-                event_category: "engagement",
-                event_label: "Hero Quote Button"
-            });
-        });
+        // ---------------------------------
+        // DATA-PACKAGE BUTTON TRACKING
+        // ---------------------------------
+        // Automatically tracks every element
+        // with data-package="..."
 
-        document.getElementById("callBtn")?.addEventListener("click", () => {
-            gtag("event", "click_call_button", {
-                event_category: "contact",
-                event_label: "Hero Call Button"
-            });
-        });
-
-        document.getElementById("googleReviewBtn")?.addEventListener("click", () => {
-            gtag("event", "view_google_reviews", {
-                event_category: "engagement"
-            });
-        });
-
-        // Package Selection
-        // Track anything with data-package
         document.addEventListener("click", (e) => {
+
             const element = e.target.closest("[data-package]");
+
             if (!element) return;
 
             gtag("event", "button_click", {
                 button_name: element.dataset.package
             });
+
         });
 
 
+        // ---------------------------------
+        // GOOGLE REVIEWS
+        // ---------------------------------
+
+        document.getElementById("googleReviewBtn")?.addEventListener("click", () => {
+
+            gtag("event", "google_reviews_click", {
+                button_name: "google_review_badge"
+            });
+
+        });
+
+
+        // ---------------------------------
+        // SOCIAL MEDIA
+        // ---------------------------------
+
+        document.getElementById("instagramBtn")?.addEventListener("click", () => {
+
+            gtag("event", "social_click", {
+                platform: "instagram"
+            });
+
+        });
+
+
+        document.getElementById("tiktokBtn")?.addEventListener("click", () => {
+
+            gtag("event", "social_click", {
+                platform: "tiktok"
+            });
+
+        });
+
+
+        document.getElementById("facebookBtn")?.addEventListener("click", () => {
+
+            gtag("event", "social_click", {
+                platform: "facebook"
+            });
+
+        });
+
     }
 
-    /* ==========================================================
-   PRICING PACKAGE ACCORDION
-========================================================== */
 
+    // =====================================
+    // FORM SUBMISSION / LEAD CONVERSION
+    // =====================================
 
-    const form = document.getElementById("leadCaptureForm");
+    document.addEventListener("submit", async (e) => {
 
-    if (form) {
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
+        const form = e.target;
 
-            const data = new FormData(form);
+        // Only handle your two Formspree forms
+        if (
+            form.id !== "leadCaptureForm" &&
+            form.id !== "leadCaptureForm1"
+        ) {
+            return;
+        }
+
+        e.preventDefault();
+
+        const submitButton = form.querySelector('[type="submit"]');
+
+        // Prevent double submissions
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+
+        const data = new FormData(form);
+
+        try {
 
             const response = await fetch(form.action, {
                 method: "POST",
@@ -282,38 +329,87 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
+
+            // ---------------------------------
+            // SUCCESS
+            // ---------------------------------
+
             if (response.ok) {
-                window.location.href = "/thankyou.html";
-            } else {
-                alert("Something went wrong. Please try again.");
-            }
-        });
-    }
 
-    const form1 = document.getElementById("leadCaptureForm1");
+                // Send conversion event to GA4
+                if (typeof gtag === "function") {
 
-    if (form1) {
-        form1.addEventListener("submit", async (e) => {
-            e.preventDefault();
+                    gtag("event", "generate_lead", {
 
-            const data = new FormData(form1);
+                        form_id: form.id,
 
-            const response = await fetch(form1.action, {
-                method: "POST",
-                body: data,
-                headers: {
-                    "Accept": "application/json"
+                        page_location: window.location.href
+
+                    });
+
                 }
-            });
 
-            if (response.ok) {
-                window.location.href = "/thankyou.html";
-            } else {
-                alert("Something went wrong. Please try again.");
+
+                // Give GA4 a moment to send the event
+                setTimeout(() => {
+
+                    window.location.href = "/thankyou.html";
+
+                }, 300);
+
+
             }
-        });
-    }
 
+
+            // ---------------------------------
+            // FORM ERROR
+            // ---------------------------------
+
+            else {
+
+                if (submitButton) {
+                    submitButton.disabled = false;
+                }
+
+                alert("Something went wrong. Please try again.");
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error("Form submission error:", error);
+
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
+
+            alert("Something went wrong. Please try again.");
+
+        }
+
+    });
+
+    // Package Selection
+    document.addEventListener("click", (e) => {
+
+        const element = e.target.closest("[data-package]");
+
+        if (!element || typeof gtag !== "function") return;
+
+        gtag("event", "button_click", {
+            button_name: element.dataset.package
+        });
+
+    });
+
+    /* ==========================================================
+   PRICING PACKAGE ACCORDION
+========================================================== */
+
+
+    
 
     const sliders = document.querySelectorAll(".before-after-slider");
 
