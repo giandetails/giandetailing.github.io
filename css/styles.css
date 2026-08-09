@@ -402,7 +402,7 @@ body {
 }
 
 .popular-pill {
-
+    
     position: absolute;
 
     top: 18px;
@@ -1155,6 +1155,7 @@ body {
 
     .hero-content {
         display: flex;
+        position: absolute;
         flex-direction: column;
         z-index: 2;
         justify-content: center;
@@ -1209,6 +1210,7 @@ body {
         margin-bottom: 14px;
 
         padding-bottom: 20px;
+        padding-top: 20px
 
 
     }
@@ -1228,6 +1230,7 @@ body {
         margin-bottom: 18px;
 
         padding-bottom: 20px;
+        color: #1a70da;
 
     }
 
@@ -1236,14 +1239,14 @@ body {
 
         display: block;
 
-        color: #aaa;
+        color: #000000;
 
     }
 
 
     .hero-content>p {
 
-        color: #d0d0d0;
+        color: #000000;
 
         font-size: 15px;
 
