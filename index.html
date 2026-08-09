@@ -214,12 +214,12 @@
                 </a>
 
                 <a href="#pricing1" data-package="landing-mobile-exterior">
-                    <i class="bi bi-droplet-fill" ></i>
+                    <i class="bi bi-droplet-fill"></i>
                     <span>Exterior</span>
                 </a>
 
                 <a href="#booking" data-package="landing-bookbtn-mobile">
-                    <i class="bi bi-calendar-check-fill" ></i>
+                    <i class="bi bi-calendar-check-fill"></i>
                     <span>Book</span>
                 </a>
 
@@ -942,17 +942,24 @@
                     </p>
 
 
-                    <form id="leadCaptureForm" action="https://formspree.io/f/mzdwdonr" method="POST">
+                    <form id="leadCaptureForm" action="https://formsubmit.co/giandetails@gmail.com" method="POST">
+                        <input type="hidden" name="user_selected_date">
+                        <input type="hidden" name="click_timestamp">
+                        <input type="hidden" name="user_city">
+                        <input type="hidden" name="user_region">
 
 
                         <input type="hidden" name="_next" value="https://www.giandetailing.com/thankyou.html">
 
+                        <input type="hidden" name="_subject" value="New Gian's Detailing Booking Request">
+
+
+                        <input type="text" name="_honey" style="display:none">
+
 
                         <div class="form-group">
 
-                            <label>
-                                Your Name
-                            </label>
+                            <label>Your Name</label>
 
                             <div class="input-box">
 
@@ -967,9 +974,7 @@
 
                         <div class="form-group">
 
-                            <label>
-                                Phone Number
-                            </label>
+                            <label>Phone Number</label>
 
                             <div class="input-box">
 
@@ -984,9 +989,7 @@
 
                         <div class="form-group">
 
-                            <label>
-                                Preferred Date
-                            </label>
+                            <label>Preferred Date</label>
 
                             <div class="input-box">
 
@@ -998,24 +1001,23 @@
 
                         </div>
 
+
                         <div class="form-group">
 
-                            <label>
-                                State and License Plate
-                            </label>
+                            <label>State and License Plate</label>
 
-                            <textarea name="message" placeholder="License Plate and State" required></textarea>
+                            <textarea class="form-control" name="license_plate" rows="4"
+                                placeholder="License plate and state the vehicle is registered in" required></textarea>
 
                         </div>
 
 
                         <div class="form-group">
 
-                            <label>
-                                Tell us about your vehicle
-                            </label>
+                            <label>Tell us about your vehicle</label>
 
-                            <textarea name="message" placeholder="Year, make, model, condition, pet hair, stains, etc."
+                            <textarea class="form-control" name="vehicle-info" rows="4"
+                                placeholder="Vehicle info (Year, Make, Model) and requested services..."
                                 required></textarea>
 
                         </div>
@@ -1051,7 +1053,6 @@
                         </div>
 
                     </form>
-
                 </div>
 
             </section>
@@ -1762,13 +1763,23 @@
                         instantly to lock in your specific service arrival window.</p>
                 </div>
 
-                <form id="leadCaptureForm1" action="https://formspree.io/f/mzdwdonr" method="POST"
+                <form id="leadCaptureForm1" action="https://formsubmit.co/giandetails@gmail.com" method="POST"
                     class="contact-form mx-auto complex-glass p-4 p-md-5 rounded-4">
                     <!-- Hidden Tracking Inputs for Anti-Bot & CRO Intelligence --> <input type="hidden"
-                        id="track_selected_date" name="user_selected_date"> <input type="hidden"
-                        id="track_click_timestamp" name="click_timestamp"> <input type="hidden" id="track_user_city"
-                        name="user_city"> <input type="hidden" id="track_user_region" name="user_region"> <input
-                        type="hidden" name="_next" value="https://www.giandetailing.com/thankyou.html">
+                        id="track_selected_date" name="user_selected_date">
+
+                    <input type="hidden" id="track_click_timestamp" name="click_timestamp">
+
+                    <input type="hidden" id="track_user_city" name="user_city">
+
+                    <input type="hidden" id="track_user_region" name="user_region">
+
+                    <input type="hidden" name="_next" value="https://www.giandetailing.com/thankyou.html">
+
+                    <input type="hidden" name="_subject" value="New Gian's Detailing Booking Request">
+
+                    <input type="text" name="_honey" style="display:none">
+
                     <div class="input-group mb-3"> <span class="input-group-text"><i
                                 class="bi bi-person-fill"></i></span>
                         <input type="text" class="form-control" name="name" placeholder="Full Name" required>
@@ -1782,12 +1793,12 @@
                             required>
                     </div>
                     <div class="input-group mb-4"> <span class="input-group-text"><i class="bi bi-chat-fill"></i></span>
-                        <textarea class="form-control" name="license Plate" rows="4"
+                        <textarea class="form-control" name="license_plate" rows="4"
                             placeholder="License plate and state the vehicle is registered in" required></textarea>
                     </div>
 
                     <div class="input-group mb-4"> <span class="input-group-text"><i class="bi bi-chat-fill"></i></span>
-                        <textarea class="form-control" name="message" rows="4"
+                        <textarea class="form-control" name="vehicle-info" rows="4"
                             placeholder="Vehicle info (Year, Make, Model) and requested services..."
                             required></textarea>
                     </div> <!-- Contact Agreement -->
