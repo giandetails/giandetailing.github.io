@@ -41,21 +41,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- MINIMUM DATE BOUNDARY CONTROLLER FOR CALENDAR ---
-    const datePicker = document.getElementById('booking_date_picker');
-    if (datePicker) {
+    // --- MINIMUM DATE BOUNDARY CONTROLLER FOR CALENDARS ---
+
+    const datePickers = document.querySelectorAll(
+        '#booking_date_picker, #booking_date_picker1'
+    );
+
+    if (datePickers.length) {
+
         const today = new Date();
+
         const yyyy = today.getFullYear();
+
         let mm = today.getMonth() + 1;
         let dd = today.getDate();
 
         if (mm < 10) mm = '0' + mm;
         if (dd < 10) dd = '0' + dd;
 
-        // Prevent users from clicking past historical dates to guarantee high-quality incoming leads
-        datePicker.min = `${yyyy}-${mm}-${dd}`;
-    }
+        const minimumDate = `${yyyy}-${mm}-${dd}`;
 
+        datePickers.forEach(datePicker => {
+            datePicker.min = minimumDate;
+        });
+    }
 
     // --- HERO VIDEO MEMORY OPTIMIZATION (LOAD/UNLOAD VIA SCROLLTRIGGER) ---
     const heroVideo = document.getElementById("hero-video");
@@ -126,45 +135,121 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- GEOLOCATION AND ANTI-BOT FORENSIC SCRIPTING ENGINE ---
-    const dateField = document.getElementById('booking_date_picker');
-    const formElement = document.getElementById('leadCaptureForm');
+    // --- FORM TRACKING / HIDDEN INPUTS ---
 
-    if (dateField && formElement) {
-        // As soon as user clicks the calendar input field, log details to diagnose if traffic is human or bot behavior
-        dateField.addEventListener('click', () => {
+    const forms = document.querySelectorAll(
+        "#leadCaptureForm, #leadCaptureForm1"
+    );
 
-            // 1. Capture exact high-accuracy system click timestamp
-            const clickTime = new Date().toISOString();
-            document.getElementById('track_click_timestamp').value = clickTime;
+    forms.forEach(form => {
 
-            // 2. Fetch geolocation intelligence through a secure, fast CDN IP API
-            fetch('https://ipapi.co/json/')
+        // Find the date field inside THIS form
+        const dateField = form.querySelector(
+            'input[type="date"][name="requested_date"]'
+        );
+
+        // Find hidden tracking fields inside THIS form
+        const selectedDateField = form.querySelector(
+            '[name="user_selected_date"]'
+        );
+
+        const timestampField = form.querySelector(
+            '[name="click_timestamp"]'
+        );
+
+        const cityField = form.querySelector(
+            '[name="user_city"]'
+        );
+
+        const regionField = form.querySelector(
+            '[name="user_region"]'
+        );
+
+        // -----------------------------
+        // DATE SELECTION
+        // -----------------------------
+
+        if (dateField && selectedDateField) {
+
+            dateField.addEventListener("change", function () {
+
+                selectedDateField.value = this.value;
+
+            });
+
+        }
+
+        // -----------------------------
+        // CLICK TIMESTAMP
+        // -----------------------------
+
+        if (timestampField) {
+
+            // Check whether a timestamp
+            // was already saved during this visit
+            const savedTimestamp =
+                sessionStorage.getItem("quote_click_timestamp");
+
+            if (savedTimestamp) {
+                timestampField.value = savedTimestamp;
+            }
+
+        }
+
+        // -----------------------------
+        // GEOLOCATION
+        // -----------------------------
+
+        if (cityField || regionField) {
+
+            fetch("https://ipapi.co/json/")
                 .then(response => response.json())
                 .then(data => {
-                    if (data) {
-                        document.getElementById('track_user_city').value = data.city || 'Unknown City';
-                        document.getElementById('track_user_region').value = data.region || 'Unknown Region';
 
-                        // Intelligent Security Layer: If user's IP locates far outside New York, make the captcha check strictly enforced
-                        if (data.region_code !== 'NY') {
-                            const verificationZone = document.getElementById('captcha-verification-zone');
-                            if (verificationZone) {
-                                verificationZone.style.border = "1px solid #dc3545"; // Soft warning layout indicator
-                            }
-                        }
+                    if (!data) return;
+
+                    if (cityField) {
+                        cityField.value =
+                            data.city || "Unknown City";
                     }
-                })
-                .catch(err => {
-                    console.log('Location metadata payload request bypass.', err);
-                });
-        });
 
-        // Map selected calendar values to hidden input fields upon final changes
-        dateField.addEventListener('change', (e) => {
-            document.getElementById('track_selected_date').value = e.target.value;
-        });
-    }
+                    if (regionField) {
+                        regionField.value =
+                            data.region || "Unknown Region";
+                    }
+
+                })
+                .catch(error => {
+
+                    console.log(
+                        "Location metadata unavailable.",
+                        error
+                    );
+
+                });
+
+        }
+
+    });
+
+    // --- SAVE QUOTE CLICK TIMESTAMP ---
+
+    document.addEventListener("click", function (e) {
+
+        const quoteButton = e.target.closest(
+            '[href="#booking"], [href="#book-now"]'
+        );
+
+        if (!quoteButton) return;
+
+        const timestamp = new Date().toISOString();
+
+        sessionStorage.setItem(
+            "quote_click_timestamp",
+            timestamp
+        );
+
+    });
 
     // --- SCROLL-SCRUBBED TEXT REVEAL ---
     if (window.gsap && window.ScrollTrigger) {
@@ -300,7 +385,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const form = e.target;
 
-        // Only handle your two Formspree forms
+        // Only handle your two booking forms
         if (
             form.id !== "leadCaptureForm" &&
             form.id !== "leadCaptureForm1"
@@ -315,13 +400,21 @@ document.addEventListener("DOMContentLoaded", () => {
         // Prevent double submissions
         if (submitButton) {
             submitButton.disabled = true;
+            submitButton.innerHTML = `
+            Sending...
+            <i class="bi bi-hourglass-split"></i>
+        `;
         }
 
         const data = new FormData(form);
 
+        // FormSubmit AJAX endpoint
+        const ajaxUrl =
+            "https://formsubmit.co/ajax/giandetails@gmail.com";
+
         try {
 
-            const response = await fetch(form.action, {
+            const response = await fetch(ajaxUrl, {
                 method: "POST",
                 body: data,
                 headers: {
@@ -329,37 +422,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
+            const result = await response.json();
+
+            console.log("FormSubmit response:", result);
 
             // ---------------------------------
             // SUCCESS
             // ---------------------------------
 
-            if (response.ok) {
+            if (response.ok && result.success !== false) {
 
                 // Send conversion event to GA4
                 if (typeof gtag === "function") {
 
                     gtag("event", "generate_lead", {
-
                         form_id: form.id,
-
                         page_location: window.location.href
-
                     });
 
                 }
 
-
-                // Give GA4 a moment to send the event
+                // Give GA4 a moment to send
                 setTimeout(() => {
 
                     window.location.href = "/thankyou.html";
 
-                }, 300);
-
+                }, 500);
 
             }
-
 
             // ---------------------------------
             // FORM ERROR
@@ -367,11 +457,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             else {
 
+                console.error("FormSubmit error:", result);
+
                 if (submitButton) {
                     submitButton.disabled = false;
+                    submitButton.innerHTML = `
+                    Request My Appointment
+                    <i class="bi bi-arrow-right"></i>
+                `;
                 }
 
-                alert("Something went wrong. Please try again.");
+                alert(
+                    "We couldn't submit your request. Please try again or call 631-346-6455."
+                );
 
             }
 
@@ -383,9 +481,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (submitButton) {
                 submitButton.disabled = false;
+                submitButton.innerHTML = `
+                Request My Appointment
+                <i class="bi bi-arrow-right"></i>
+            `;
             }
 
-            alert("Something went wrong. Please try again.");
+            alert(
+                "We couldn't submit your request. Please try again or call 631-346-6455."
+            );
 
         }
 
@@ -409,7 +513,7 @@ document.addEventListener("DOMContentLoaded", () => {
 ========================================================== */
 
 
-    
+
 
     const sliders = document.querySelectorAll(".before-after-slider");
 
