@@ -1160,7 +1160,7 @@ body {
         flex-direction: column;
         z-index: 2;
         justify-content: center;
-
+        align-items: center;
 
         width: 100%;
 
@@ -1194,7 +1194,7 @@ body {
 
         display: inline-flex;
 
-        align-items: right;
+        align-items: center;
 
         gap: 7px;
 
@@ -1209,10 +1209,9 @@ body {
         letter-spacing: 1px;
 
         margin-bottom: 7px;
+        padding-top: 12px;
 
-        padding-bottom: 20px;
-        padding-top: 20px;
-        padding-left: 50px;
+        
 
     }
 
@@ -1325,7 +1324,8 @@ body {
         color: #aaa;
 
         font-size: 11px;
-        padding-left: 40px;
+        
+        align-items: center;
 
     }
 
