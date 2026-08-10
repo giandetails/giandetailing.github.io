@@ -310,71 +310,97 @@ document.addEventListener("DOMContentLoaded", () => {
     // GOOGLE ANALYTICS 4 EVENTS
     // ===========================
 
-    if (typeof gtag === "function") {
 
-        // ---------------------------------
-        // DATA-PACKAGE BUTTON TRACKING
-        // ---------------------------------
-        // Automatically tracks every element
-        // with data-package="..."
+    // ---------------------------------
+    // DATA-PACKAGE BUTTON TRACKING
+    // ---------------------------------
+    // Automatically tracks every element
+    // with data-package="..."
+    //
+    // IMPORTANT:
+    // Do NOT wrap the event listener in
+    // "if (typeof gtag === 'function')"
+    // because GA4 may load after this script.
 
-        document.addEventListener("click", (e) => {
+    document.addEventListener("click", (e) => {
 
-            const element = e.target.closest("[data-package]");
+        const element = e.target.closest("[data-package]");
 
-            if (!element) return;
+        if (!element) return;
 
-            gtag("event", "button_click", {
-                button_name: element.dataset.package
-            });
+        // Check that GA4 is available when
+        // the user actually clicks.
+        if (typeof gtag !== "function") {
+            console.warn("GA4 gtag is not available.");
+            return;
+        }
 
+        const packageName = element.dataset.package;
+
+        if (!packageName) return;
+
+        gtag("event", "button_click", {
+            button_name: packageName,
+            page_location: window.location.href
         });
 
+        console.log("GA4 button_click:", packageName);
 
-        // ---------------------------------
-        // GOOGLE REVIEWS
-        // ---------------------------------
+    });
 
-        document.getElementById("googleReviewBtn")?.addEventListener("click", () => {
 
-            gtag("event", "google_reviews_click", {
-                button_name: "google_review_badge"
-            });
+    // ---------------------------------
+    // GOOGLE REVIEWS
+    // ---------------------------------
 
+    document.getElementById("googleReviewBtn")?.addEventListener("click", () => {
+
+        if (typeof gtag !== "function") return;
+
+        gtag("event", "google_reviews_click", {
+            button_name: "google_review_badge"
         });
 
+    });
 
-        // ---------------------------------
-        // SOCIAL MEDIA
-        // ---------------------------------
 
-        document.getElementById("instagramBtn")?.addEventListener("click", () => {
+    // ---------------------------------
+    // SOCIAL MEDIA
+    // ---------------------------------
 
-            gtag("event", "social_click", {
-                platform: "instagram"
-            });
+    document.getElementById("instagramBtn")?.addEventListener("click", () => {
 
+        if (typeof gtag !== "function") return;
+
+        gtag("event", "social_click", {
+            platform: "instagram"
         });
 
+    });
 
-        document.getElementById("tiktokBtn")?.addEventListener("click", () => {
 
-            gtag("event", "social_click", {
-                platform: "tiktok"
-            });
+    document.getElementById("tiktokBtn")?.addEventListener("click", () => {
 
+        if (typeof gtag !== "function") return;
+
+        gtag("event", "social_click", {
+            platform: "tiktok"
         });
 
+    });
 
-        document.getElementById("facebookBtn")?.addEventListener("click", () => {
 
-            gtag("event", "social_click", {
-                platform: "facebook"
-            });
+    document.getElementById("facebookBtn")?.addEventListener("click", () => {
 
+        if (typeof gtag !== "function") return;
+
+        gtag("event", "social_click", {
+            platform: "facebook"
         });
 
-    }
+    });
+
+
 
 
     // =====================================
@@ -383,108 +409,88 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.addEventListener("submit", async (e) => {
 
-        const form = e.target;
+    const form = e.target;
 
-        // Only handle your two booking forms
-        if (
-            form.id !== "leadCaptureForm" &&
-            form.id !== "leadCaptureForm1"
-        ) {
-            return;
-        }
+    // Only handle your two booking forms
+    if (
+        form.id !== "leadCaptureForm" &&
+        form.id !== "leadCaptureForm1"
+    ) {
+        return;
+    }
 
-        e.preventDefault();
+    e.preventDefault();
 
-        const submitButton = form.querySelector('[type="submit"]');
+    const submitButton = form.querySelector('[type="submit"]');
 
-        // Prevent double submissions
-        if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.innerHTML = `
+    // Prevent double submissions
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.innerHTML = `
             Sending...
             <i class="bi bi-hourglass-split"></i>
         `;
-        }
+    }
 
-        const data = new FormData(form);
+    const data = new FormData(form);
 
-        // FormSubmit AJAX endpoint
-        const ajaxUrl =
-            "https://formsubmit.co/ajax/giandetails@gmail.com";
+    // FormSubmit AJAX endpoint
+    const ajaxUrl =
+        "https://formsubmit.co/ajax/giandetails@gmail.com";
 
-        try {
+    try {
 
-            const response = await fetch(ajaxUrl, {
-                method: "POST",
-                body: data,
-                headers: {
-                    "Accept": "application/json"
-                }
-            });
+        const response = await fetch(ajaxUrl, {
+            method: "POST",
+            body: data,
+            headers: {
+                "Accept": "application/json"
+            }
+        });
 
-            const result = await response.json();
+        const result = await response.json();
 
-            console.log("FormSubmit response:", result);
+        console.log("FormSubmit response:", result);
 
-            // ---------------------------------
-            // SUCCESS
-            // ---------------------------------
+        // ---------------------------------
+        // SUCCESS
+        // ---------------------------------
 
-            if (response.ok && result.success !== false) {
+        if (response.ok && result.success !== false) {
 
-                // Send conversion event to GA4
-                if (typeof gtag === "function") {
+            // Send conversion event to GA4
+            if (typeof gtag === "function") {
 
-                    gtag("event", "generate_lead", {
-                        form_id: form.id,
-                        page_location: window.location.href
-                    });
-
-                }
-
-                // Give GA4 a moment to send
-                setTimeout(() => {
-
-                    window.location.href = "/thankyou.html";
-
-                }, 500);
+                gtag("event", "generate_lead", {
+                    form_id: form.id,
+                    page_location: window.location.href
+                });
 
             }
 
-            // ---------------------------------
-            // FORM ERROR
-            // ---------------------------------
+            // Give GA4 a moment to send
+            setTimeout(() => {
 
-            else {
+                window.location.href = "/thankyou.html";
 
-                console.error("FormSubmit error:", result);
-
-                if (submitButton) {
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = `
-                    Request My Appointment
-                    <i class="bi bi-arrow-right"></i>
-                `;
-                }
-
-                alert(
-                    "We couldn't submit your request. Please try again or call 631-346-6455."
-                );
-
-            }
+            }, 500);
 
         }
 
-        catch (error) {
+        // ---------------------------------
+        // FORM ERROR
+        // ---------------------------------
 
-            console.error("Form submission error:", error);
+        else {
+
+            console.error("FormSubmit error:", result);
 
             if (submitButton) {
                 submitButton.disabled = false;
                 submitButton.innerHTML = `
-                Request My Appointment
-                <i class="bi bi-arrow-right"></i>
-            `;
+                    Request My Appointment
+                    <i class="bi bi-arrow-right"></i>
+                `;
             }
 
             alert(
@@ -493,111 +499,120 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-    });
+    }
 
-    // Package Selection
-    document.addEventListener("click", (e) => {
+    catch (error) {
 
-        const element = e.target.closest("[data-package]");
+        console.error("Form submission error:", error);
 
-        if (!element || typeof gtag !== "function") return;
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.innerHTML = `
+                Request My Appointment
+                <i class="bi bi-arrow-right"></i>
+            `;
+        }
 
-        gtag("event", "button_click", {
-            button_name: element.dataset.package
-        });
+        alert(
+            "We couldn't submit your request. Please try again or call 631-346-6455."
+        );
 
-    });
+    }
 
-    /* ==========================================================
-   PRICING PACKAGE ACCORDION
+});
+
+
+
+/* ==========================================================
+PRICING PACKAGE ACCORDION
 ========================================================== */
 
 
 
 
-    const sliders = document.querySelectorAll(".before-after-slider");
+const sliders = document.querySelectorAll(".before-after-slider");
 
-    sliders.forEach(function (slider) {
+sliders.forEach(function (slider) {
 
-        const range = slider.querySelector(".slider-input");
-        const beforeWrapper = slider.querySelector(".before-image-wrapper");
-        const handle = slider.querySelector(".slider-handle");
+    const range = slider.querySelector(".slider-input");
+    const beforeWrapper = slider.querySelector(".before-image-wrapper");
+    const handle = slider.querySelector(".slider-handle");
 
-        function updateSlider() {
+    function updateSlider() {
 
-            const value = range.value;
+        const value = range.value;
 
-            beforeWrapper.style.width = value + "%";
-            handle.style.left = value + "%";
+        beforeWrapper.style.width = value + "%";
+        handle.style.left = value + "%";
 
-            // Once the user interacts, hide the instruction
-            if (value > 0) {
-                slider.classList.add("has-interacted");
-            }
+        // Once the user interacts, hide the instruction
+        if (value > 0) {
+            slider.classList.add("has-interacted");
+        }
+
+    }
+
+    // Initial position
+    updateSlider();
+
+    // Mouse / touch / keyboard
+    range.addEventListener("input", updateSlider);
+
+});
+
+
+
+const toggles = document.querySelectorAll(".package-toggle");
+
+toggles.forEach(toggle => {
+
+    toggle.addEventListener("click", () => {
+
+        const content = document.getElementById(
+            toggle.getAttribute("aria-controls")
+        );
+
+        const isOpen = toggle.getAttribute("aria-expanded") === "true";
+
+        // Close every package
+        toggles.forEach(btn => {
+
+            btn.setAttribute("aria-expanded", "false");
+            btn.classList.remove("active");
+
+            const target = document.getElementById(
+                btn.getAttribute("aria-controls")
+            );
+
+            target.classList.remove("open");
+            target.style.maxHeight = null;
+
+        });
+
+        // Open selected package
+        if (!isOpen) {
+
+            toggle.setAttribute("aria-expanded", "true");
+            toggle.classList.add("active");
+
+            content.classList.add("open");
+            content.style.maxHeight = content.scrollHeight + "px";
 
         }
 
-        // Initial position
-        updateSlider();
+    });
 
-        // Mouse / touch / keyboard
-        range.addEventListener("input", updateSlider);
+    // Keyboard Accessibility
+    toggle.addEventListener("keydown", e => {
+
+        if (e.key === "Enter" || e.key === " ") {
+
+            e.preventDefault();
+            toggle.click();
+
+        }
 
     });
 
-
-
-    const toggles = document.querySelectorAll(".package-toggle");
-
-    toggles.forEach(toggle => {
-
-        toggle.addEventListener("click", () => {
-
-            const content = document.getElementById(
-                toggle.getAttribute("aria-controls")
-            );
-
-            const isOpen = toggle.getAttribute("aria-expanded") === "true";
-
-            // Close every package
-            toggles.forEach(btn => {
-
-                btn.setAttribute("aria-expanded", "false");
-                btn.classList.remove("active");
-
-                const target = document.getElementById(
-                    btn.getAttribute("aria-controls")
-                );
-
-                target.classList.remove("open");
-                target.style.maxHeight = null;
-
-            });
-
-            // Open selected package
-            if (!isOpen) {
-
-                toggle.setAttribute("aria-expanded", "true");
-                toggle.classList.add("active");
-
-                content.classList.add("open");
-                content.style.maxHeight = content.scrollHeight + "px";
-
-            }
-
-        });
-
-        // Keyboard Accessibility
-        toggle.addEventListener("keydown", e => {
-
-            if (e.key === "Enter" || e.key === " ") {
-
-                e.preventDefault();
-                toggle.click();
-
-            }
-
-        });
-
-    });
+});
 });
