@@ -690,6 +690,38 @@ body {
     display: none;
 }
 
+/* Conversion reassurance and lower-friction form cues */
+.hero-reassurance {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px 22px;
+    margin-top: 22px;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.hero-reassurance i,
+.form-reassurance i {
+    color: #5ea7ff;
+    margin-right: 6px;
+}
+
+.optional-label {
+    color: #8f8f8f;
+    font-size: 0.82em;
+    font-weight: 500;
+}
+
+.form-reassurance {
+    margin-top: 16px;
+    color: rgba(255, 255, 255, 0.64);
+    font-size: 0.86rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
 @media (max-width: 360px) {
 
     .hero-actions {
@@ -2451,7 +2483,7 @@ body {
 
     .input-box i {
 
-        color: #777;
+        color: #7c7777ad;
 
     }
 
@@ -2475,7 +2507,7 @@ body {
 
     .input-box input::placeholder {
 
-        color: #555;
+        color: #9e9a9acc;
 
     }
 
