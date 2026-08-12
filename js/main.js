@@ -1,21 +1,82 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    const responsiveAnchorMap = {
+        "#home": { mobile: ".show-mobile #home", desktop: ".show-desktop #hero" },
+        "#hero": { mobile: ".show-mobile #home", desktop: ".show-desktop #hero" },
+        "#about": { mobile: ".show-mobile #about", desktop: ".show-desktop #about" },
+        "#work": { mobile: ".show-mobile #work", desktop: ".show-desktop #work1" },
+        "#work1": { mobile: ".show-mobile #work", desktop: ".show-desktop #work1" },
+        "#gallery": { mobile: ".show-mobile #work", desktop: ".show-desktop #gallery" },
+        "#pricing": { mobile: ".show-mobile #pricing1", desktop: ".show-desktop #pricing" },
+        "#pricing1": { mobile: ".show-mobile #pricing1", desktop: ".show-desktop #pricing" },
+        "#reviews": { mobile: ".show-mobile #reviews", desktop: ".show-desktop #testimonials" },
+        "#testimonials": { mobile: ".show-mobile #reviews", desktop: ".show-desktop #testimonials" },
+        "#booking": { mobile: ".show-mobile #booking", desktop: ".show-desktop #book-now" },
+        "#book-now": { mobile: ".show-mobile #booking", desktop: ".show-desktop #book-now" },
+        "#driveway-duo": { mobile: ".show-mobile #driveway-duo", desktop: ".show-desktop #driveway-duo-desktop" },
+        "#driveway-duo-desktop": { mobile: ".show-mobile #driveway-duo", desktop: ".show-desktop #driveway-duo-desktop" }
+    };
+
+    function getResponsiveAnchorTarget(targetId) {
+        if (!targetId || targetId === "#") return null;
+
+        const normalizedTargetId = targetId.toLowerCase();
+        const responsiveTarget = responsiveAnchorMap[normalizedTargetId];
+
+        if (responsiveTarget) {
+            const selector = window.matchMedia("(max-width: 768px)").matches
+                ? responsiveTarget.mobile
+                : responsiveTarget.desktop;
+
+            return document.querySelector(selector);
+        }
+
+        try {
+            return document.getElementById(decodeURIComponent(targetId.slice(1)));
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function getNavigationOffset() {
+        if (window.matchMedia("(max-width: 768px)").matches) {
+            return document.querySelector(".mobile-header")?.offsetHeight || 0;
+        }
+
+        return document.querySelector(".navbar")?.offsetHeight || 0;
+    }
+
+    function scrollToResponsiveAnchor(targetId, behavior = "smooth") {
+        const targetElement = getResponsiveAnchorTarget(targetId);
+        if (!targetElement) return false;
+
+        const targetPosition = Math.max(
+            0,
+            targetElement.getBoundingClientRect().top + window.scrollY - getNavigationOffset()
+        );
+
+        window.scrollTo({
+            top: targetPosition,
+            behavior
+        });
+
+        return true;
+    }
+
     // --- PERFORMANCE SMOOTH SCROLL ANCHOR ENGINE ---
     const localLinks = document.querySelectorAll('a[href^="#"]');
     localLinks.forEach(link => {
         link.addEventListener("click", function (e) {
             e.preventDefault();
             const targetId = this.getAttribute("href");
-            const targetElement = document.querySelector(targetId);
+            const targetElement = getResponsiveAnchorTarget(targetId);
 
             if (targetElement) {
-                const navbarHeight = document.querySelector(".navbar").offsetHeight;
-                const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - navbarHeight;
+                if (window.location.hash !== targetId) {
+                    window.history.pushState(null, "", targetId);
+                }
 
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: "smooth"
-                });
+                scrollToResponsiveAnchor(targetId);
 
                 // Smoothly collapse hamburger nav toggles instantly on mobile viewport click actions
                 const navMenu = document.getElementById("navMenu");
@@ -28,6 +89,30 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+    function scrollToCurrentHash(behavior = "smooth") {
+        const currentHash = window.location.hash;
+        if (!currentHash || currentHash === "#") return;
+
+        scrollToResponsiveAnchor(currentHash, behavior);
+    }
+
+    if (window.location.hash && window.location.hash !== "#") {
+        requestAnimationFrame(() => scrollToCurrentHash("auto"));
+        window.addEventListener("load", () => scrollToCurrentHash("auto"), { once: true });
+    }
+
+    window.addEventListener("hashchange", () => scrollToCurrentHash());
+    window.addEventListener("popstate", () => scrollToCurrentHash());
+
+    const mobileBreakpoint = window.matchMedia("(max-width: 768px)");
+    const handleBreakpointChange = () => scrollToCurrentHash("auto");
+
+    if (typeof mobileBreakpoint.addEventListener === "function") {
+        mobileBreakpoint.addEventListener("change", handleBreakpointChange);
+    } else if (typeof mobileBreakpoint.addListener === "function") {
+        mobileBreakpoint.addListener(handleBreakpointChange);
+    }
 
     // --- DYNAMIC SCROLL CLASSES FOR NAVBAR APPEARANCE ---
     window.addEventListener("scroll", () => {
@@ -143,6 +228,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     forms.forEach(form => {
 
+        const drivewayDuoToggle = form.querySelector("[data-driveway-duo-toggle]");
+        const drivewayDuoField = form.querySelector("[data-driveway-duo-field]");
+        const secondVehicleInput = drivewayDuoField?.querySelector("textarea");
+
+        if (drivewayDuoToggle && drivewayDuoField && secondVehicleInput) {
+            drivewayDuoToggle.addEventListener("change", function (event) {
+                const isSelected = drivewayDuoToggle.checked;
+
+                drivewayDuoField.hidden = !isSelected;
+                drivewayDuoToggle.setAttribute("aria-expanded", String(isSelected));
+                secondVehicleInput.disabled = !isSelected;
+                secondVehicleInput.required = isSelected;
+
+                if (isSelected && event.isTrusted) {
+                    secondVehicleInput.focus();
+                } else {
+                    secondVehicleInput.value = "";
+                }
+            });
+        }
+
         // Find the date field inside THIS form
         const dateField = form.querySelector(
             'input[type="date"][name="requested_date"]'
@@ -230,6 +336,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
+    });
+
+    document.addEventListener("click", function (event) {
+        const promotionButton = event.target.closest(".driveway-duo-button");
+        if (!promotionButton) return;
+
+        const form = window.matchMedia("(max-width: 768px)").matches
+            ? document.getElementById("leadCaptureForm")
+            : document.getElementById("leadCaptureForm1");
+        const interestToggle = form?.querySelector("[data-driveway-duo-toggle]");
+
+        if (interestToggle && !interestToggle.checked) {
+            interestToggle.checked = true;
+            interestToggle.dispatchEvent(new Event("change", { bubbles: true }));
+        }
     });
 
     // --- SAVE QUOTE CLICK TIMESTAMP ---
@@ -366,7 +487,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.trackGiansEvent("generate_lead", {
                     form_id: form.id,
                     form_location: form.id === "leadCaptureForm" ? "mobile" : "desktop",
-                    lead_source: "website_quote_form"
+                    lead_source: "website_quote_form",
+                    promotion_name: form.querySelector("[data-driveway-duo-toggle]")?.checked
+                        ? "driveway_duo_full_detail"
+                        : "none"
                 });
             }
 
