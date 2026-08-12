@@ -306,103 +306,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // ===========================
-    // GOOGLE ANALYTICS 4 EVENTS
-    // ===========================
-
-
-    // ---------------------------------
-    // DATA-PACKAGE BUTTON TRACKING
-    // ---------------------------------
-    // Automatically tracks every element
-    // with data-package="..."
-    //
-    // IMPORTANT:
-    // Do NOT wrap the event listener in
-    // "if (typeof gtag === 'function')"
-    // because GA4 may load after this script.
-
-    document.addEventListener("click", (e) => {
-
-        const element = e.target.closest("[data-package]");
-
-        if (!element) return;
-
-        // Check that GA4 is available when
-        // the user actually clicks.
-        if (typeof gtag !== "function") {
-            console.warn("GA4 gtag is not available.");
-            return;
-        }
-
-        const packageName = element.dataset.package;
-
-        if (!packageName) return;
-
-        gtag("event", "button_click", {
-            button_name: packageName,
-            page_location: window.location.href
-        });
-
-        console.log("GA4 button_click:", packageName);
-
-    });
-
-
-    // ---------------------------------
-    // GOOGLE REVIEWS
-    // ---------------------------------
-
-    document.getElementById("googleReviewBtn")?.addEventListener("click", () => {
-
-        if (typeof gtag !== "function") return;
-
-        gtag("event", "google_reviews_click", {
-            button_name: "google_review_badge"
-        });
-
-    });
-
-
-    // ---------------------------------
-    // SOCIAL MEDIA
-    // ---------------------------------
-
-    document.getElementById("instagramBtn")?.addEventListener("click", () => {
-
-        if (typeof gtag !== "function") return;
-
-        gtag("event", "social_click", {
-            platform: "instagram"
-        });
-
-    });
-
-
-    document.getElementById("tiktokBtn")?.addEventListener("click", () => {
-
-        if (typeof gtag !== "function") return;
-
-        gtag("event", "social_click", {
-            platform: "tiktok"
-        });
-
-    });
-
-
-    document.getElementById("facebookBtn")?.addEventListener("click", () => {
-
-        if (typeof gtag !== "function") return;
-
-        gtag("event", "social_click", {
-            platform: "facebook"
-        });
-
-    });
-
-
-
-
     // =====================================
     // FORM SUBMISSION / LEAD CONVERSION
     // =====================================
@@ -459,13 +362,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok && result.success !== false) {
 
             // Send conversion event to GA4
-            if (typeof gtag === "function") {
-
-                gtag("event", "generate_lead", {
+            if (typeof window.trackGiansEvent === "function") {
+                window.trackGiansEvent("generate_lead", {
                     form_id: form.id,
-                    page_location: window.location.href
+                    form_location: form.id === "leadCaptureForm" ? "mobile" : "desktop",
+                    lead_source: "website_quote_form"
                 });
-
             }
 
             // Give GA4 a moment to send
@@ -483,12 +385,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         else {
 
+            if (typeof window.trackGiansEvent === "function") {
+                window.trackGiansEvent("quote_form_error", {
+                    form_location: form.id === "leadCaptureForm" ? "mobile" : "desktop",
+                    error_type: "submission_rejected"
+                });
+            }
+
             console.error("FormSubmit error:", result);
 
             if (submitButton) {
                 submitButton.disabled = false;
                 submitButton.innerHTML = `
-                    Request My Appointment
+                    Get My Free Quote
                     <i class="bi bi-arrow-right"></i>
                 `;
             }
@@ -503,12 +412,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     catch (error) {
 
+        if (typeof window.trackGiansEvent === "function") {
+            window.trackGiansEvent("quote_form_error", {
+                form_location: form.id === "leadCaptureForm" ? "mobile" : "desktop",
+                error_type: "network_error"
+            });
+        }
+
         console.error("Form submission error:", error);
 
         if (submitButton) {
             submitButton.disabled = false;
             submitButton.innerHTML = `
-                Request My Appointment
+                Get My Free Quote
                 <i class="bi bi-arrow-right"></i>
             `;
         }
