@@ -89,7 +89,7 @@
                     Our Work
                 </a>
 
-                <a href="#pricing1" class="mobile-menu-link">
+                <a href="#pricing" class="mobile-menu-link">
                     <i class="bi bi-tags-fill"></i>
                     Pricing
                 </a>
@@ -187,7 +187,12 @@
 
                         <div>
                             <i class="bi bi-check-circle-fill"></i>
-                            Free, No-Obligation Quote
+                            Inspect Before You Pay
+                        </div>
+
+                        <div>
+                            <i class="bi bi-star-fill"></i>
+                            5-Star Local Service
                         </div>
 
                     </div>
@@ -203,6 +208,23 @@
 
             </section>
 
+            <section id="driveway-duo" class="driveway-duo-offer" data-promotion="driveway_duo">
+                <div class="driveway-duo-inner">
+                    <div class="driveway-duo-kicker">DRIVEWAY DUO</div>
+                    <h2>Book Two Full Detail Packages and Save $50</h2>
+                    <p>Two Full Details. One convenient appointment. Save $50.</p>
+                    <div class="driveway-duo-minimum">$300 combined minimum. Same address and appointment.</div>
+                    <a href="#booking" class="driveway-duo-button" data-package="driveway-duo-mobile">
+                        Get My Driveway Duo Quote
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <details class="driveway-duo-terms">
+                        <summary>Offer details</summary>
+                        <p>Valid only when both vehicles receive a Full Detail package. $300 minimum combined service. Both vehicles must be completed during the same appointment at the same address. Discount applies to the final invoice and cannot be combined with another promotion. Additional charges based on vehicle condition will be disclosed before service begins.</p>
+                    </details>
+                </div>
+            </section>
+
 
             <!-- =========================================================
      QUICK SERVICE BAR
@@ -210,17 +232,17 @@
 
             <section class="quick-services">
 
-                <a href="#pricing1" data-package="landing-mobile-interior">
+                <a href="#pricing" data-package="landing-mobile-interior">
                     <i class="bi bi-car-front-fill"></i>
                     <span>Full Detail</span>
                 </a>
 
-                <a href="#pricing1" data-package="landing-mobile-interior">
+                <a href="#pricing" data-package="landing-mobile-interior">
                     <i class="bi bi-stars"></i>
                     <span>Interior</span>
                 </a>
 
-                <a href="#pricing1" data-package="landing-mobile-exterior">
+                <a href="#pricing" data-package="landing-mobile-exterior">
                     <i class="bi bi-droplet-fill"></i>
                     <span>Exterior</span>
                 </a>
@@ -978,7 +1000,6 @@
 
                         </div>
 
-
                         <div class="form-group">
 
                             <label>Phone Number</label>
@@ -1014,7 +1035,7 @@
                             <label>State and License Plate <span class="optional-label">(optional)</span></label>
 
                             <textarea class="form-control input-box" name="license_plate" rows="4"
-                                placeholder="License plate and registration state"></textarea>
+                                placeholder="Example: NY • ABC-1234 (optional)"></textarea>
 
                         </div>
 
@@ -1024,9 +1045,24 @@
                             <label>Tell us about your vehicle</label>
 
                             <textarea class="form-control input-box" name="vehicle-info" rows="4"
-                                placeholder="Vehicle info (Year, Make, Model) and requested services..."
+                                placeholder="Example: 2022 Honda CR-V • Interior detail"
                                 required></textarea>
 
+                        </div>
+
+                        <label class="agreement driveway-duo-form-option" for="driveway_duo_interest_mobile">
+                            <input type="checkbox" id="driveway_duo_interest_mobile" name="driveway_duo_interest"
+                                value="yes" data-driveway-duo-toggle aria-controls="second_vehicle_mobile"
+                                aria-expanded="false">
+                            <span>I’m interested in the Driveway Duo—Full Detail packages for two vehicles at the same address.</span>
+                        </label>
+
+                        <div class="form-group driveway-duo-second-vehicle" id="second_vehicle_mobile"
+                            data-driveway-duo-field hidden>
+                            <label for="second_vehicle_info_mobile">Second Vehicle</label>
+                            <textarea class="form-control input-box" id="second_vehicle_info_mobile"
+                                name="second_vehicle_info" rows="4"
+                                placeholder="Example: 2020 Toyota Camry • Light stains • Full Detail" disabled></textarea>
                         </div>
 
 
@@ -1054,7 +1090,7 @@
 
                             <i class="bi bi-shield-check"></i>
 
-                            No payment required. We'll confirm pricing and availability before you book.
+                            No payment required to request pricing. Inspect the completed work before paying. The final walkthrough guarantee covers only missed spots of dirt or grime in areas included in your package. Tell us before we leave and we’ll correct them. It does not cover pre-existing paint damage or permanent upholstery staining.
 
                         </div>
 
@@ -1071,7 +1107,7 @@
     <div class="show-desktop">
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center gap-2" href="#hero">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="#home">
                     <img src="assets/logos/circular-logo.png" alt="Gian's Detailing">
                     <span>Gian's Detailing</span>
                 </a>
@@ -1120,10 +1156,10 @@
                         </li>
 
                         <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#work1">Our Work</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#testimonials">Reviews</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#work">Our Work</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#reviews">Reviews</a></li>
                         <li class="nav-item"><a class="nav-link active-quote" data-package="navbar-quote"
-                                href="#book-now">Get A Quote</a></li>
+                                href="#booking">Get A Quote</a></li>
                     </ul>
                 </div>
             </div>
@@ -1156,7 +1192,7 @@
                 </h1>
 
                 <div class="hero-buttons">
-                    <a href="#book-now" id="quoteBtn" class="btn btn-primary btn-lg hero-btn">
+                    <a href="#booking" id="quoteBtn" class="btn btn-primary btn-lg hero-btn">
                         <i class="bi bi-calendar-check-fill"></i> Get My Free Quote
                     </a>
                     <a href="tel:6313466455" id="callBtn" class="btn btn-outline-light btn-lg hero-btn">
@@ -1176,9 +1212,28 @@
                 </div>
                 <div class="hero-reassurance" aria-label="Service benefits">
                     <span><i class="bi bi-check-circle-fill"></i> We come to you</span>
-                    <span><i class="bi bi-check-circle-fill"></i> No-obligation quote</span>
+                    <span><i class="bi bi-shield-check"></i> Inspect Before You Pay</span>
                     <span><i class="bi bi-star-fill"></i> 5-star local service</span>
                 </div>
+            </div>
+        </section>
+
+        <section id="driveway-duo-desktop" class="driveway-duo-offer" data-promotion="driveway_duo">
+            <div class="container driveway-duo-inner">
+                <div class="driveway-duo-copy">
+                    <div class="driveway-duo-kicker">DRIVEWAY DUO</div>
+                    <h2>Book Two Full Detail Packages and Save $50</h2>
+                    <p>Two Full Details. One convenient appointment. Save $50.</p>
+                    <div class="driveway-duo-minimum">$300 combined minimum. Same address and appointment.</div>
+                </div>
+                <a href="#booking" class="driveway-duo-button" data-package="driveway-duo-desktop">
+                    Get My Driveway Duo Quote
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+                <details class="driveway-duo-terms">
+                    <summary>Offer details</summary>
+                    <p>Valid only when both vehicles receive a Full Detail package. $300 minimum combined service. Both vehicles must be completed during the same appointment at the same address. Discount applies to the final invoice and cannot be combined with another promotion. Additional charges based on vehicle condition will be disclosed before service begins.</p>
+                </details>
             </div>
         </section>
 
@@ -1468,7 +1523,7 @@
 
 
                         <!-- CTA -->
-                        <a href="#book-now" class="btn btn-primary w-100 package-btn" data-package="exterior-detail">
+                <a href="#booking" class="btn btn-primary w-100 package-btn" data-package="exterior-detail">
                             Select Package
                         </a>
 
@@ -1583,7 +1638,7 @@
                         </div>
 
 
-                        <a href="#book-now" class="btn btn-primary w-100 package-btn" data-package="interior-detail">
+                <a href="#booking" class="btn btn-primary w-100 package-btn" data-package="interior-detail">
 
                             Select Package
 
@@ -1704,7 +1759,7 @@
 
 
                         <!-- CTA -->
-                        <a href="#book-now" class="btn btn-primary w-100 package-btn" data-package="full-detail">
+                <a href="#booking" class="btn btn-primary w-100 package-btn" data-package="full-detail">
                             Select Package
                         </a>
 
@@ -1811,7 +1866,21 @@
                         <textarea class="form-control" name="vehicle-info" rows="4"
                             placeholder="Vehicle info (Year, Make, Model) and requested services..."
                             required></textarea>
-                    </div> <!-- Contact Agreement -->
+                    </div>
+                    <div class="driveway-duo-form-option p-3 rounded-3 mb-4">
+                        <input type="checkbox" id="driveway_duo_interest_desktop" name="driveway_duo_interest"
+                            value="yes" data-driveway-duo-toggle aria-controls="second_vehicle_desktop"
+                            aria-expanded="false">
+                        <label for="driveway_duo_interest_desktop">I’m interested in the Driveway Duo—Full Detail packages for two vehicles at the same address.</label>
+                    </div>
+                    <div class="input-group mb-4 driveway-duo-second-vehicle" id="second_vehicle_desktop"
+                        data-driveway-duo-field hidden>
+                        <span class="input-group-text"><i class="bi bi-car-front-fill"></i></span>
+                        <textarea class="form-control" id="second_vehicle_info_desktop" name="second_vehicle_info"
+                            rows="4" placeholder="Second Vehicle — Year, make, model, and condition (Full Detail)"
+                            disabled></textarea>
+                    </div>
+                    <!-- Contact Agreement -->
                     <div id="captcha-verification-zone" class="p-3 rounded-3 mb-4 d-flex align-items-center gap-3"
                         style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05);"> <input
                             type="checkbox" id="bot_security_checkbox" name="Opted-In" value="yes"
@@ -1820,7 +1889,7 @@
                             agree to receive occasional offers and detailing tips (optional) </label> </div> <button type="submit"
                         class="btn btn-primary btn-lg w-100 text-uppercase fw-bold shadow-sm py-3"
                         data-package="lead-submission">Get My Free Quote</button>
-                    <div class="form-reassurance"><i class="bi bi-shield-check"></i> No payment required. We'll confirm pricing and availability before you book.</div>
+                    <div class="form-reassurance"><i class="bi bi-shield-check"></i> No payment required to request pricing. Inspect the completed work before paying. The final walkthrough guarantee covers only missed spots of dirt or grime in areas included in your package. Tell us before we leave and we’ll correct them. It does not cover pre-existing paint damage or permanent upholstery staining.</div>
                 </form>
             </div>
         </section>
