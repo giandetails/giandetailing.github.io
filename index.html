@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <!--favicon-->
     <link rel="icon" type="image/x-icon" href="assets/logos/favicon.ico">
+    <script src="js/analytics.js" defer></script>
 </head>
 
 <body>
@@ -166,7 +167,7 @@
 
                         <a href="#booking" class="primary-button" data-package="landing-mobile-quote-cta">
                             <i class="bi bi-calendar-check-fill"></i>
-                            Get Instant Quote
+                            Get My Free Quote
                         </a>
 
                         <a href="tel:6313466455" class="secondary-button" data-package="landing-mobile-call-cta">
@@ -181,12 +182,12 @@
 
                         <div>
                             <i class="bi bi-check-circle-fill"></i>
-                            Mobile Service
+                            We Come To You
                         </div>
 
                         <div>
                             <i class="bi bi-check-circle-fill"></i>
-                            Professional Products
+                            Free, No-Obligation Quote
                         </div>
 
                     </div>
@@ -943,12 +944,12 @@
                     </h2>
 
                     <p>
-                        Send us your information and we'll contact you
-                        to confirm your appointment.
+                        Tell us about your vehicle. We'll follow up with exact pricing
+                        and availability—no obligation.
                     </p>
 
 
-                    <form id="leadCaptureForm" action="https://formsubmit.co/giandetails@gmail.com" method="POST">
+                    <form id="leadCaptureForm" name="mobile_quote_form" action="https://formsubmit.co/giandetails@gmail.com" method="POST">
                         <input type="hidden" name="user_selected_date">
                         <input type="hidden" name="click_timestamp">
                         <input type="hidden" name="user_city">
@@ -1010,10 +1011,10 @@
 
                         <div class="form-group">
 
-                            <label>State and License Plate</label>
+                            <label>State and License Plate <span class="optional-label">(optional)</span></label>
 
                             <textarea class="form-control input-box" name="license_plate" rows="4"
-                                placeholder="License plate and state the vehicle is registered in" required></textarea>
+                                placeholder="License plate and registration state"></textarea>
 
                         </div>
 
@@ -1031,10 +1032,10 @@
 
                         <label class="agreement">
 
-                            <input type="checkbox" name="Opted-In" value="yes" required>
+                            <input type="checkbox" name="Opted-In" value="yes">
 
                             <span>
-                                I agree to receive marketing communications.
+                                Send me occasional offers and detailing tips. (Optional)
                             </span>
 
                         </label>
@@ -1042,7 +1043,7 @@
 
                         <button type="submit" class="submit-button" data-package="lead-submission-mobile">
 
-                            Request My Appointment
+                            Get My Free Quote
 
                             <i class="bi bi-arrow-right"></i>
 
@@ -1053,8 +1054,7 @@
 
                             <i class="bi bi-shield-check"></i>
 
-                            We'll contact you to confirm availability
-                            and pricing.
+                            No payment required. We'll confirm pricing and availability before you book.
 
                         </div>
 
@@ -1157,7 +1157,7 @@
 
                 <div class="hero-buttons">
                     <a href="#book-now" id="quoteBtn" class="btn btn-primary btn-lg hero-btn">
-                        <i class="bi bi-calendar-check-fill"></i> Instant Quote
+                        <i class="bi bi-calendar-check-fill"></i> Get My Free Quote
                     </a>
                     <a href="tel:6313466455" id="callBtn" class="btn btn-outline-light btn-lg hero-btn">
                         <i class="bi bi-telephone-fill"></i> Call 631-346-6455
@@ -1173,6 +1173,11 @@
                         <i class="bi bi-geo-alt-fill"></i>
                         <span>Based in Selden • Serving All of Suffolk County</span>
                     </div>
+                </div>
+                <div class="hero-reassurance" aria-label="Service benefits">
+                    <span><i class="bi bi-check-circle-fill"></i> We come to you</span>
+                    <span><i class="bi bi-check-circle-fill"></i> No-obligation quote</span>
+                    <span><i class="bi bi-star-fill"></i> 5-star local service</span>
                 </div>
             </div>
         </section>
@@ -1763,13 +1768,12 @@
         <section id="book-now" class="section-padding bg-dark-section">
             <div class="container">
                 <div class="text-center mb-5">
-                    <h2 class="section-title">Schedule Your Mobile Service</h2>
-                    <p class="text-white-50 mx-auto" style="max-width: 550px;">Select your preferred date. We will reach
-                        out
-                        instantly to lock in your specific service arrival window.</p>
+                    <div class="section-tag">FREE QUOTE</div>
+                    <h2 class="section-title">Get Exact Pricing For Your Vehicle</h2>
+                    <p class="text-white-50 mx-auto" style="max-width: 620px;">Share a few details and your preferred date. We'll confirm your price and availability before you commit.</p>
                 </div>
 
-                <form id="leadCaptureForm1" action="https://formsubmit.co/giandetails@gmail.com" method="POST"
+                <form id="leadCaptureForm1" name="desktop_quote_form" action="https://formsubmit.co/giandetails@gmail.com" method="POST"
                     class="contact-form mx-auto complex-glass p-4 p-md-5 rounded-4">
                     <!-- Hidden Tracking Inputs for Anti-Bot & CRO Intelligence --> <input type="hidden"
                         id="track_selected_date" name="user_selected_date">
@@ -1800,7 +1804,7 @@
                     </div>
                     <div class="input-group mb-4"> <span class="input-group-text"><i class="bi bi-chat-fill"></i></span>
                         <textarea class="form-control" name="license_plate" rows="4"
-                            placeholder="License plate and state the vehicle is registered in" required></textarea>
+                            placeholder="License plate and registration state (optional)"></textarea>
                     </div>
 
                     <div class="input-group mb-4"> <span class="input-group-text"><i class="bi bi-chat-fill"></i></span>
@@ -1810,14 +1814,13 @@
                     </div> <!-- Contact Agreement -->
                     <div id="captcha-verification-zone" class="p-3 rounded-3 mb-4 d-flex align-items-center gap-3"
                         style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05);"> <input
-                            type="checkbox" id="bot_security_checkbox" name="Opted-In" value="yes" required
+                            type="checkbox" id="bot_security_checkbox" name="Opted-In" value="yes"
                             style="width: 22px; height: 22px; cursor: pointer;"> <label for="bot_security_checkbox"
                             class="form-check-label text-white-50 small user-select-none" style="cursor: pointer;"> I
-                            agree
-                            to receive marketing communications </label> </div> <button type="submit"
+                            agree to receive occasional offers and detailing tips (optional) </label> </div> <button type="submit"
                         class="btn btn-primary btn-lg w-100 text-uppercase fw-bold shadow-sm py-3"
-                        data-package="lead-submission">Submit Booking
-                        Request</button>
+                        data-package="lead-submission">Get My Free Quote</button>
+                    <div class="form-reassurance"><i class="bi bi-shield-check"></i> No payment required. We'll confirm pricing and availability before you book.</div>
                 </form>
             </div>
         </section>
@@ -1989,17 +1992,6 @@
     <!-- SCRIPTS -->
 
 
-
-    <!-- Google Analytics -->
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q2SGHGPHTK"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-Q2SGHGPHTK');
-    </script>
 
     <script>
         document.querySelectorAll('.accordion-header').forEach(header => {
