@@ -722,6 +722,174 @@ body {
     text-align: center;
 }
 
+/* Driveway Duo promotion and conditional second-vehicle fields */
+.driveway-duo-offer {
+    position: relative;
+    overflow: hidden;
+    padding: 42px 24px;
+    scroll-margin-top: 86px;
+    background:
+        radial-gradient(circle at 12% 10%, rgba(94, 167, 255, 0.2), transparent 34%),
+        linear-gradient(135deg, #101820 0%, #0b0e12 58%, #111 100%);
+    border-top: 1px solid rgba(94, 167, 255, 0.34);
+    border-bottom: 1px solid rgba(94, 167, 255, 0.24);
+}
+
+.driveway-duo-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px 34px;
+    max-width: 1120px;
+    margin: 0 auto;
+}
+
+.driveway-duo-kicker {
+    margin-bottom: 7px;
+    color: #5ea7ff;
+    font-size: 0.76rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+}
+
+.driveway-duo-offer h2 {
+    margin: 0 0 7px;
+    color: #fff;
+    font-size: clamp(1.65rem, 3vw, 2.5rem);
+    font-weight: 850;
+    letter-spacing: -0.035em;
+}
+
+.driveway-duo-offer p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 1.02rem;
+}
+
+.driveway-duo-minimum {
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.85rem;
+}
+
+.driveway-duo-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 54px;
+    padding: 14px 24px;
+    border-radius: 9px;
+    background: #5ea7ff;
+    color: #07101a;
+    font-size: 0.88rem;
+    font-weight: 850;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.driveway-duo-button:hover {
+    transform: translateY(-2px);
+    background: #7ab7ff;
+    color: #07101a;
+}
+
+.driveway-duo-terms {
+    grid-column: 1 / -1;
+    max-width: 900px;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.76rem;
+}
+
+.driveway-duo-terms summary {
+    width: max-content;
+    margin-top: 4px;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.68);
+    font-weight: 700;
+}
+
+.driveway-duo-terms p {
+    margin-top: 9px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.76rem;
+    line-height: 1.55;
+}
+
+.driveway-duo-form-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    background: rgba(94, 167, 255, 0.08);
+    border: 1px solid rgba(94, 167, 255, 0.24);
+    color: rgba(255, 255, 255, 0.86);
+    cursor: pointer;
+}
+
+.driveway-duo-form-option input {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    accent-color: #5ea7ff;
+}
+
+.driveway-duo-form-option label,
+.driveway-duo-form-option span {
+    cursor: pointer;
+    line-height: 1.45;
+}
+
+[data-driveway-duo-field][hidden] {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .driveway-duo-offer {
+        padding: 38px 20px;
+        text-align: center;
+    }
+
+    .driveway-duo-inner {
+        display: block;
+    }
+
+    .driveway-duo-offer h2 {
+        font-size: 1.8rem;
+        line-height: 1.08;
+    }
+
+    .driveway-duo-offer p {
+        margin-top: 10px;
+        font-size: 0.96rem;
+    }
+
+    .driveway-duo-button {
+        width: 100%;
+        margin-top: 22px;
+    }
+
+    .driveway-duo-terms {
+        text-align: left;
+    }
+
+    .driveway-duo-terms summary {
+        margin: 16px auto 0;
+    }
+
+    .agreement.driveway-duo-form-option {
+        margin: 20px 0 17px;
+        padding: 14px;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 0.78rem;
+        text-align: left;
+    }
+}
+
 @media (max-width: 360px) {
 
     .hero-actions {
@@ -2540,8 +2708,15 @@ body {
 
     textarea::placeholder {
 
-        color: #555;
+        color: rgba(255, 255, 255, 0.68);
+        opacity: 1;
 
+    }
+
+    .booking-section textarea::placeholder {
+        color: rgba(255, 255, 255, 0.72);
+        opacity: 1;
+        line-height: 1.5;
     }
 
 
