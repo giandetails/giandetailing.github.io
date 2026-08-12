@@ -91,6 +91,14 @@
             page_layout: getPageLayout(link)
         };
 
+        if (link.matches(".driveway-duo-button")) {
+            trackEvent("select_promotion", {
+                promotion_id: "driveway_duo_full_detail_50",
+                promotion_name: "Driveway Duo - Two Full Details",
+                creative_slot: getPageLayout(link)
+            });
+        }
+
         if (href.startsWith("tel:")) {
             trackEvent("phone_call_click", commonParameters);
             return;
@@ -146,6 +154,13 @@
     document.addEventListener("DOMContentLoaded", function () {
         const path = window.location.pathname.toLowerCase();
 
+        if (window.location.hash && window.location.hash !== "#") {
+            trackEvent("section_landing", {
+                destination: window.location.hash.slice(1),
+                page_layout: window.matchMedia("(max-width: 768px)").matches ? "mobile" : "desktop"
+            });
+        }
+
         if (path.endsWith("thankyou.html")) {
             trackEvent("thank_you_page_view", {});
         } else if (path.endsWith("socials.html")) {
@@ -163,7 +178,54 @@
                     form_location: form.id === "leadCaptureForm" ? "mobile" : "desktop"
                 });
             });
+
+            form.querySelector("[data-driveway-duo-toggle]")?.addEventListener("change", function (event) {
+                trackEvent("driveway_duo_interest", {
+                    form_location: form.id === "leadCaptureForm" ? "mobile" : "desktop",
+                    selected: event.target.checked ? "yes" : "no"
+                });
+            });
         });
+
+        document.querySelectorAll(".driveway-duo-terms").forEach(function (terms) {
+            terms.addEventListener("toggle", function () {
+                if (!terms.open) return;
+                trackEvent("promotion_terms_view", {
+                    promotion_name: "driveway_duo_full_detail",
+                    page_layout: getPageLayout(terms)
+                });
+            });
+        });
+
+        if (window.location.hash === "#driveway-duo") {
+            trackEvent("promotion_landing", {
+                promotion_name: "driveway_duo_full_detail"
+            });
+        }
+
+        if (window.location.hash === "#pricing") {
+            trackEvent("pricing_landing", {
+                page_layout: window.matchMedia("(max-width: 768px)").matches ? "mobile" : "desktop"
+            });
+        }
+
+        const visiblePromotion = Array.from(document.querySelectorAll(".driveway-duo-offer"))
+            .find(function (offer) { return offer.offsetParent !== null; });
+
+        if (visiblePromotion && "IntersectionObserver" in window) {
+            const promotionObserver = new IntersectionObserver(function (entries, observer) {
+                if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+
+                trackEvent("view_promotion", {
+                    promotion_id: "driveway_duo_full_detail_50",
+                    promotion_name: "Driveway Duo - Two Full Details",
+                    creative_slot: getPageLayout(visiblePromotion)
+                });
+                observer.disconnect();
+            }, { threshold: 0.5 });
+
+            promotionObserver.observe(visiblePromotion);
+        }
 
         const reachedDepths = new Set();
         const depthMilestones = [50, 90];
